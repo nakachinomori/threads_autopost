@@ -112,6 +112,9 @@ def main():
 
     if not due:
         print("投稿予定なし")
+        if not dry_run:
+            me = call("GET", "me", {"fields": "username", "access_token": token})
+            print(f"トークンOK: @{me['username']}")
     if not dry_run:
         QUEUE.write_text(json.dumps(queue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     sys.exit(1 if failed else 0)
