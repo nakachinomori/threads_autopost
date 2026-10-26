@@ -2,9 +2,10 @@ name: threads-post
 
 on:
   schedule:
-    # JST 7:30 / 12:00 / 21:00 前後（GitHubのcronは数分〜十数分遅れることがある）
+    # JST 7:30 / 12:00 / 18:00（写真枠）/ 21:00 前後（GitHubのcronは数分〜十数分遅れることがある）
     - cron: "30 22 * * *"
     - cron: "0 3 * * *"
+    - cron: "0 9 * * *"
     - cron: "0 12 * * *"
   workflow_dispatch:
 
@@ -25,7 +26,7 @@ jobs:
       - name: Post due entries
         env:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
-          IMAGE_BASE_URL: ${{ vars.IMAGE_BASE_URL }}
+          IMAGE_BASE_URL: ${{ vars.IMAGE_BASE_URL || format('https://raw.githubusercontent.com/{0}/main/images', github.repository) }}
         run: python post.py
       - name: Save queue state
         if: always()
